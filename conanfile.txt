@@ -1,0 +1,8 @@
+[build_requires]
+catch2/3.5.2
+benchmark/1.8.3
+unordered_dense/4.4.0
+
+[generators]
+cmake_paths
+cmake_find_package

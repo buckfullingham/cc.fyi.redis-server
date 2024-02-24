@@ -40,10 +40,13 @@ public:
 
   explicit database(
       std::function<now_t()> = std::chrono::system_clock::now,
-      std::function<std::unique_ptr<std::iostream>()> = []() {
-        return std::make_unique<std::fstream>(
-            "state.db", std::fstream::in | std::fstream::out);
-      });
+      std::function<std::unique_ptr<std::istream>()> = []() {
+        return std::make_unique<std::fstream>("state.db", std::fstream::in);
+      },
+      std::function<std::unique_ptr<std::ostream>()> = []() {
+        return std::make_unique<std::fstream>("state.db", std::fstream::out | std::fstream::trunc);
+      }
+      );
 
   std::optional<std::reference_wrapper<std::string>>
   get_string(std::string_view key, time_point now);
@@ -85,12 +88,15 @@ public:
 
   now_t now();
 
-  std::unique_ptr<std::iostream> state_stream();
+  std::unique_ptr<std::istream> state_istream();
+
+  std::unique_ptr<std::ostream> state_ostream();
 
 private:
   map_t map_;
   std::function<now_t()> now_;
-  std::function<std::unique_ptr<std::iostream>()> state_stream_;
+  std::function<std::unique_ptr<std::istream>()> state_istream_;
+  std::function<std::unique_ptr<std::ostream>()> state_ostream_;
 };
 
 } // namespace redis

@@ -312,7 +312,7 @@ void redis_cmd_save(const redis::commands::args_t &args, redis::database &db,
     return error(output, "ERR wrong number of arguments");
 
   try {
-    auto file = db.state_stream();
+    auto file = db.state_ostream();
     redis::resp::writer writer(*file);
 
     db.visit(overloaded{
@@ -355,7 +355,7 @@ void redis_cmd_load(const redis::commands::args_t &args, redis::database &db,
   if (args.size() != 1)
     return error(output, "ERR wrong number of arguments");
 
-  auto stream = db.state_stream();
+  auto stream = db.state_istream();
   redis::resp::null_handler null_handler;
   redis::command_handler command_handler(db, null_handler);
   redis::resp::parser parser(command_handler);

@@ -13,7 +13,8 @@ protected:
   fixture()
       : now_(),
         db_([this]() { return now_; },
-            [this]() { return std::make_unique<std::iostream>(&stringbuf_); }) {
+            [this]() { return std::make_unique<std::istream>(&stringbuf_); },
+            [this]() { return std::make_unique<std::ostream>(&stringbuf_); }) {
   }
 
   std::string submit(redis::commands::cmd_t cmd,

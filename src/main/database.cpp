@@ -4,8 +4,9 @@ using redis::util::overloaded;
 
 redis::database::database(
     std::function<now_t()> now,
-    std::function<std::unique_ptr<std::iostream>()> state_stream)
-    : now_(std::move(now)), state_stream_(std::move(state_stream)) {
+    std::function<std::unique_ptr<std::istream>()> state_istream,
+    std::function<std::unique_ptr<std::ostream>()> state_ostream)
+    : now_(std::move(now)), state_istream_(std::move(state_istream)), state_ostream_(std::move(state_ostream)) {
   map_.reserve(1 << 20);
 }
 
@@ -130,8 +131,12 @@ redis::database::get_or_create_list(std::string_view key, list_t list) {
   }
 }
 
-std::unique_ptr<std::iostream> redis::database::state_stream() {
-  return state_stream_();
+std::unique_ptr<std::istream> redis::database::state_istream() {
+  return state_istream_();
+}
+
+std::unique_ptr<std::ostream> redis::database::state_ostream() {
+  return state_ostream_();
 }
 
 void redis::database::clear() {

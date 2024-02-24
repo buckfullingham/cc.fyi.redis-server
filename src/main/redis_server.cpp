@@ -159,6 +159,7 @@ int main(int, char *[]) {
   epoll_add(epollfd.value(), sockfd.value(), EPOLLIN, {});
 
   redis::database db;
+  load(db);
 
   std::list<client> clients;
   std::array<epoll_event, 128> events{};

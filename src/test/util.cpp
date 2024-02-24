@@ -17,6 +17,7 @@ TEST_CASE("ci_hash") {
 TEST_CASE("ci_equal") {
   ns::ci_equal eq;
   CHECK(eq("hello world"sv, "Hello World"s));
+  CHECK(eq("hello world\xff"sv, "Hello World\xff"s));
 }
 
 TEST_CASE("tokenize a whole string") {
